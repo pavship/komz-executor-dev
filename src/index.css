@@ -1,0 +1,325 @@
+body {
+  margin: 0;
+  padding: 0;
+  /* font-family: sans-serif; */
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  color: rgba(0, 0, 0, 0.87)
+}
+
+/* AWS-AMPLIFY */
+.amplify-form-section, .amplify-error-section {
+  width: 300px !important;
+}
+
+.amplify-section-header {
+  background-color: #1b1c1d !important
+}
+
+.amplify-button:hover {
+  background-color: rgb(204, 204, 204) !important
+}
+
+.amplify-error-section {
+  margin: auto;
+}
+
+.amplify-section-footer {
+  visibility: hidden;
+}
+
+.amplify-form-container, .amplify-form-section {
+  height: 208px;
+}
+
+/* SEMANTIC UI */
+
+.ui.accordion:not(.styled) .accordion .title~.content:not(.ui), .ui.accordion:not(.styled) .title~.content:not(.ui) {
+  padding-top: 0
+}
+
+.ui.styled.accordion .accordion .title, .ui.styled.accordion .title {
+  color: rgba(0,0,0,.55);
+}
+
+.ui.selection.list .list>.item, .ui.selection.list>.item {
+  color: rgba(0,0,0,.6);
+}
+
+/* DAY-PICKER-INPUT */
+.DayPickerInput>input {
+  padding: .5em 0em;
+  margin-right: 1em;
+  line-height: 1.21428571em;
+  background: #fff;
+  color: rgba(0,0,0,.87);
+  border: 1px solid rgba(34,36,38,.15);
+  border-radius: .28571429rem;
+  box-shadow: none;
+  text-align: center;
+  display: block;
+  -webkit-tap-highlight-color: rgba(255,255,255,0);
+  transition: box-shadow .1s ease,border-color .1s ease,-webkit-box-shadow .1s ease;
+}
+
+/* KOMZ SPECIFIC */
+
+.komz-no-margin {
+  margin: 0 !important;
+}
+
+/* LAYOUT */
+
+.komz-exec-container {
+  display: block;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  max-width: 320px !important;
+}
+
+.komz-disp-container {
+  display: block;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  width: 100% !important;
+}
+
+.komz-navbar {
+  margin-bottom: 0 !important;
+}
+
+.komz-pushable {
+  margin-top: 0px !important;
+  height: 99999px !important;
+}
+
+.komz-sidebar {
+  width: 180px !important;
+}
+
+/* DISPATCHER VIEW */
+
+.komz-dispacher-grid {
+  display: grid;
+  grid-template-columns: 20px 360px 1440px 20px;
+  grid-template-rows: 20px 40px 300px 50px;
+  border: 1px solid rgba(34,36,38,.15);
+  box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+  grid-template-areas: "pad-top pad-top pad-top pad-top"
+                        "pad-left datepicker scale pad-right"
+                        "pad-left widgets chart pad-right"
+                        "pad-bot pad-bot pad-bot pad-bot";
+}
+
+.komz-chart-datepicker {
+  grid-area: datepicker;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.komz-chart-widget-list {
+  grid-area: widgets;
+  background-color: rgba(34,36,38,.02);
+}
+
+.komz-chart-widget {
+  display:flex;
+  height: 50px;
+}
+
+.komz-scale {
+  grid-area: scale;
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: 0.4fr 0.6fr;
+}
+
+.komz-scale-level1 {
+  grid-column: 1 / 25;
+  border-left: 1px solid rgba(34, 36, 38, 0.15);
+  padding-left: 5px;
+}
+
+.komz-scale-level2 {
+  border-left: 1px solid rgba(34, 36, 38, 0.15);
+  padding-left: 5px;
+}
+
+.komz-chart {
+  grid-area: chart;
+  background-color: rgba(34,36,38,.02);
+  box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: 1fr;
+  /* grid-template-areas:
+  "s s s s s s s s s s s s s s s s s s s s s s s s"; */
+}
+
+.komz-chart-section1 {
+  position: relative;
+  border-left: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.komz-chart-section {
+  /* grid-area: s; */
+  border-left: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.komz-workbar {
+  position: absolute;
+  height: 40px;
+  /* padding: 5px; */
+  line-height: 40px;
+  /* background-color: rgba(126, 154, 154, .4); */
+  border-style: solid;
+  border-width: 1px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+.komz-workbar.komz-aside {
+  background-color: rgba(255, 179, 99, 0.65);
+}
+.komz-workbar.komz-aside:hover {
+  background-color: rgba(255, 179, 99, 1);
+}
+.komz-workbar.komz-rest {
+  background-color: rgba(247, 239, 129, 0.65);
+}
+.komz-workbar.komz-rest:hover {
+  background-color: rgba(247, 239, 129, 1);
+}
+.komz-workbar.komz-negative {
+  background-color: rgba(252, 120, 113, 0.65);
+}
+.komz-workbar.komz-negative:hover {
+  background-color: rgba(252, 120, 113, 1);
+}
+.komz-workbar.komz-main {
+  background-color: rgba(191, 221, 126, 0.65);
+}
+.komz-workbar.komz-main:hover {
+  background-color: rgba(191, 221, 126, 1);
+}
+.komz-workbar.komz-aux {
+  background-color: rgba(102, 158, 214, 0.65);
+}
+.komz-workbar.komz-aux:hover {
+  background-color: rgba(102, 158, 214, 1);
+}
+
+/* EXECUTOR VIEW */
+.komz-exec-status-bar {
+  margin: 0 0 4px 0 !important;
+  padding: 3px 10px !important;
+  background-color: rgba(0, 0, 0, .1) !important;
+}
+.komz-exec-status-bar>.progress>.bar {
+  min-width: 0 !important;
+}
+.komz-exec-status-bar>.label {
+  height: 19px !important;
+  vertical-align: bottom !important;
+}
+
+.komz-exec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 160px ;
+  /* border: 1px solid rgba(34,36,38,.15); */
+  /* box-shadow: 0 1px 2px 0 rgba(34,36,38,.15); */
+  grid-template-areas: "col-left col-right";
+}
+
+.komz-exec-col-left {
+  grid-area: col-left;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr ;
+  /* justify-items: center;
+  align-items: center; */
+  /* justify-items: center; */
+  align-items: stretch;
+}
+
+.komz-exec-col-right {
+  grid-area: col-right;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr ;
+  /* justify-items: center;
+  align-items: center; */
+  align-items: stretch;
+}
+
+.komz-exec-button-container {
+  padding: 2px 5px;
+  /* vertical-align: middle; */
+  display: flex;
+  align-items: center;
+}
+
+.komz-exec-button-container.komz-wt-aside {
+  background-color: rgba(255, 179, 99, 0.8);
+}
+.komz-exec-button-container.komz-wt-rest {
+  background-color: rgba(247, 239, 129, 0.8);
+}
+.komz-exec-button-container.komz-wt-negative {
+  background-color: rgba(252, 120, 113, 0.8);
+}
+.komz-exec-button-container.komz-wt-main {
+  background-color: rgba(191, 221, 126, 0.8);
+}
+.komz-exec-button-container.komz-wt-aux {
+  background-color: rgba(102, 158, 214, 0.8);
+}
+
+.komz-exec-button {
+  padding: 4px !important;
+  /* background-color: #4e4d4d !important; */
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid !important;
+}
+
+.komz-wt-aside>.komz-exec-button.active {
+  background-color: rgba(255, 179, 99, 1) !important;
+  padding: 3px !important;
+  border: 2px solid !important;
+}
+.komz-wt-rest>.komz-exec-button.active {
+  background-color: rgba(247, 239, 129, 1) !important;
+  padding: 3px !important;
+  border: 2px solid !important;
+}
+.komz-wt-negative>.komz-exec-button.active {
+  background-color: rgba(252, 120, 113, 1) !important;
+  padding: 3px !important;
+  border: 2px solid !important;
+}
+.komz-wt-main>.komz-exec-button.active {
+  background-color: rgba(191, 221, 126, 1) !important;
+  padding: 3px !important;
+  border: 2px solid !important;
+}
+.komz-wt-aux>.komz-exec-button.active {
+  background-color: rgba(102, 158, 214, 1) !important;
+  padding: 3px !important;
+  border: 2px solid !important;
+}
+.komz-wt-aside {
+  background-color: rgba(255, 179, 99, 1) !important;
+}
+.komz-wt-rest {
+  background-color: rgba(247, 239, 129, 1) !important;
+}
+.komz-wt-negative {
+  background-color: rgba(252, 120, 113, 1) !important;
+}
+.komz-wt-main {
+  background-color: rgba(191, 221, 126, 1) !important;
+}
+.komz-wt-aux {
+  background-color: rgba(102, 158, 214, 1) !important;
+}
