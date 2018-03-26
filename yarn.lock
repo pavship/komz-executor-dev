@@ -5772,7 +5772,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -5906,12 +5906,6 @@ react-apollo@^2.0.4:
     lodash.flowright "^3.5.0"
     lodash.pick "^4.4.0"
     prop-types "^15.5.8"
-
-react-day-picker@^7.1.4:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.1.4.tgz#abd187ba4baea524f765fd4cd0055bcb45c33edc"
-  dependencies:
-    prop-types "^15.6.1"
 
 react-dev-utils@^5.0.0:
   version "5.0.0"

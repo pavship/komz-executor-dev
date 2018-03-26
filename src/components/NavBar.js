@@ -3,19 +3,17 @@ import {Auth} from "aws-amplify"
 import { Menu, Icon, Label } from 'semantic-ui-react'
 
 export default class NavBar extends Component {
-  state = { activeItem: 'home' }
   signOut = () => {
     Auth.signOut()
     window.location.reload()
   }
   render() {
-    const { activeItem } = this.state
-    const { user, toggleSidebar } = this.props
+    const { user, sidebarVisible, toggleSidebar } = this.props
     return (
       <Menu icon inverted className='komz-navbar' size='small'>
         <Menu.Menu>
           { user.isDisp ? null :
-            <Menu.Item name='bars' onClick={toggleSidebar}>
+            <Menu.Item active={sidebarVisible} onClick={toggleSidebar}>
               Взять в работу
               {/* <Label color='grey'>0</Label> */}
             </Menu.Item>

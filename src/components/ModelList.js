@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, {Component} from 'react'
-import { Accordion, Segment, Icon, Label, Header } from 'semantic-ui-react'
+import { Accordion, Icon, Label, Header } from 'semantic-ui-react'
 import ProdList from './ProdList'
 
 // const ModelList = ({ deptModels }) => (

@@ -1,7 +1,5 @@
-import React, { Component, Fragment } from 'react'
-import { Grid, Item, Button } from 'semantic-ui-react'
+import React, { Fragment } from 'react'
 import Main from './components/Main'
-import ModelList from './components/ModelList'
 
 import appSyncConfig from "./AppSync"
 import { ApolloProvider } from "react-apollo"

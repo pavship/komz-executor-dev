@@ -14,7 +14,6 @@
     "luxon": "^0.5.8",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
-    "react-day-picker": "^7.1.4",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
     "semantic-ui-css": "^2.3.0",
