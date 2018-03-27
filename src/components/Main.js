@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { graphql, compose } from "react-apollo"
 // import { Query } from 'react-apollo'
 
-import NavBar from './NavBar'
 import ExecView from './ExecView'
 
 import { currentUser } from '../graphql/userQueries'
@@ -19,12 +18,13 @@ class Main extends Component {
     if (error) return 'Ошибка'
     return (
       <div className={(currentUser.isDisp) ? 'komz-disp-container' : 'komz-exec-container'}>
-        <NavBar user={currentUser} sidebarVisible={leftSidebarVisible} toggleSidebar={this.toggleSidebar}/>
-        { currentUser.isDisp ?
-          (<div>Похоже, Вы являетесь диспетчером. Панель диспетчера доступна по адресу: <a
+        { currentUser.isDisp ? (
+          <div>
+            Похоже, Вы являетесь диспетчером. Панель диспетчера доступна по адресу: <a
             href='https://pavship.github.io/komz-dispatcher'>https://pavship.github.io/komz-dispatcher</a>
-          </div>) :
-          <ExecView sidebarVisible={leftSidebarVisible} user={currentUser} />
+          </div>
+        ) :
+          <ExecView sidebarVisible={leftSidebarVisible} toggleSidebar={this.toggleSidebar} user={currentUser} />
         }
       </div>
     )

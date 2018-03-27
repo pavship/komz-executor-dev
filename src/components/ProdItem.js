@@ -8,9 +8,10 @@ class ProdItem extends Component {
 
   handleClick = (e, d) => {
     const { checked } = this.state
-    const { id } = this.props.prod
+    const { selectProd } = this.props
+    const { id, fullnumber } = this.props.prod
     this.setState({checked: !checked})
-    // this.props.selectProd(id)
+    selectProd({id, fullnumber})
   }
 
   render() {

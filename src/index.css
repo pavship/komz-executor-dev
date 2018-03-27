@@ -1,3 +1,5 @@
+$color: rgba(255, 179, 99, 0.8);
+
 body {
   margin: 0;
   padding: 0;
@@ -80,13 +82,31 @@ body {
   margin-bottom: 0 !important;
 }
 
+.komz-navbar-menu-left-item {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 .komz-pushable {
   margin-top: 0px !important;
   height: 99999px !important;
 }
 
 .komz-sidebar {
-  width: 180px !important;
+  width: 320px !important;
+}
+
+.komz-sidebar-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.komz-sidebar-col-left {
+  border-right: 1px solid rgba(0, 0, 0, .1);
+}
+
+.komz-sidebar-col-right-list {
+  margin-left: 10px !important;
 }
 
 /* EXECUTOR VIEW */
@@ -142,7 +162,8 @@ body {
 }
 
 .komz-exec-button-container.komz-wt-aside {
-  background-color: rgba(255, 179, 99, 0.8);
+  /* background-color: rgba(255, 179, 99, 0.8); */
+  background-color: $color;
 }
 .komz-exec-button-container.komz-wt-rest {
   background-color: rgba(247, 239, 129, 0.8);

@@ -24,6 +24,7 @@ class ModelList extends Component {
   render() {
 
     const { activeIndex } = this.state
+    const { selectProd } = this.props
 
     const deptModels = this.props.deptModels.map((deptModel, i) => {
       const allProdsCount = deptModel.prods.length
@@ -31,7 +32,7 @@ class ModelList extends Component {
       const active = _.includes(activeIndex, i)
 
       return (
-        <div key={deptModel.id} >
+        <div key={deptModel.id}>
           <Accordion.Title
             active={active}
             index={i}
@@ -52,7 +53,7 @@ class ModelList extends Component {
             <Accordion.Content active>
               {/* {'deptModel.prods here'} */}
               {/* <ProdList prods={deptModel.prods} selectProd={this.props.selectProd}/> */}
-              <ProdList prods={deptModel.prods} />
+              <ProdList model={deptModel.model} prods={deptModel.prods} selectProd={selectProd}/>
             </Accordion.Content>
           }
         </div>
@@ -60,7 +61,7 @@ class ModelList extends Component {
     })
 
     return (
-      <Accordion>
+      <Accordion className='komz-sidebar-col-left'>
         {deptModels}
       </Accordion>
     )
