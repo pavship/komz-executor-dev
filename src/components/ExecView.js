@@ -9,7 +9,7 @@ import ModelList from './ModelList'
 import SelectedList from './SelectedList'
 import ExecControlPanel from './ExecControlPanel'
 
-import deptModelsQuery from '../graphql/deptModelsQuery'
+import { getCurWork } from '../graphql/workQueries'
 
 class ExecView extends Component {
   state = {
@@ -19,33 +19,45 @@ class ExecView extends Component {
     //this component keeps mainWorkIsInProgress status to indicate it on the NavBar
     mainWorkIsInProgress: false
   }
+  countProds = (models) => models.reduce((res, model) => { return res + model.prods.length }, 0)
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.getCurWork.getCurWork) return
+    const nextModels = nextProps.getCurWork.getCurWork.models
+    if (!this.props.getCurWork.getCurWork ||
+      !_.isEqual(nextModels, this.props.getCurWork.getCurWork.models)) {
+      this.setState({
+        selected: nextModels || [],
+        prodCount: this.countProds(nextModels || [])
+      })
+    }
+  }
   selectProd = (model) => {
-    console.log(model)
     const { selected } = this.state
+    const foundModel = _.find(selected, {id: model.id});
     const newVal =
-      !_.some(selected, {id: model.id})
+      !foundModel
       ? [...selected, model]
-      : !_.some(_.find(selected, {id: model.id}).prods, {id: model.prods[0].id})
+      : !_.some(foundModel.prods, {id: model.prods[0].id})
         ? [..._.reject(selected, {id: model.id}),
-            { ..._.find(selected, {id: model.id}),
-              prods: [..._.find(selected, {id: model.id}).prods, model.prods[0]]
+            { ...foundModel,
+              prods: [...foundModel.prods, model.prods[0]]
             }
           ]
-        : _.find(selected, {id: model.id}).prods.length > 1
+        : foundModel.prods.length > 1
           ? [..._.reject(selected, {id: model.id}),
-              { ..._.find(selected, {id: model.id}),
-                prods: _.reject(_.find(selected, {id: model.id}).prods, {id: model.prods[0].id})
+              { ...foundModel,
+                prods: _.reject(foundModel.prods, {id: model.prods[0].id})
               }
             ]
           : _.reject(selected, {id: model.id})
     this.setState({
       selected: newVal,
-      prodCount: newVal.reduce((res, model) => { return res + model.prods.length }, 0)
+      prodCount: this.countProds(newVal)
     })
   }
   render() {
     const { selected, prodCount, mainWorkIsInProgress } = this.state
-    const { user, sidebarVisible, toggleSidebar, deptModelsQuery: { loading, error, deptModels } } = this.props
+    const { user, sidebarVisible, toggleSidebar, getCurWork: {loading, error, refetch, getCurWork} } = this.props
     return (
       <Fragment>
         <NavBar
@@ -57,17 +69,16 @@ class ExecView extends Component {
         />
         <Sidebar.Pushable as={Segment} className='komz-pushable'>
           <Sidebar as={Card} animation='overlay' visible={sidebarVisible} className='komz-sidebar'>
-            {
-              (loading) ? <div>Загрузка...</div> :
-              (error) ? <div>Ошибка получения данных.</div> :
-              <div className='komz-sidebar-container'>
-                <ModelList deptModels={deptModels} selectProd={this.selectProd}/>
-                <SelectedList selected={selected} />
-              </div>
-            }
+            <div className='komz-sidebar-container'>
+              <ModelList selectProd={this.selectProd}/>
+              <SelectedList selected={selected} />
+            </div>
           </Sidebar>
           <Sidebar.Pusher>
-            <ExecControlPanel user={user}/>
+            { loading ? 'Загрузка' :
+              error ? 'Ошибка загрузки данных' :
+              <ExecControlPanel user={user} selected={selected} curWork={getCurWork} refetchCurWork={refetch}/>
+            }
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </Fragment>
@@ -75,14 +86,15 @@ class ExecView extends Component {
   }
 }
 
+// export default ExecView
 export default compose(
     graphql(
-        deptModelsQuery,
+        getCurWork,
         {
-            name: 'deptModelsQuery',
-            options: {
-                fetchPolicy: 'cache-and-network',
-            }
+            name: 'getCurWork',
+            // options: {
+            //     fetchPolicy: 'cache-and-network',
+            // }
         }
     ),
-)(ExecView);
+)(ExecView)

@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const createWork = gql`
-  mutation createWork ( $start: String! $execName: String! $workType: String! $workSubType: String) {
-    createWork ( start: $start execName: $execName workType: $workType workSubType: $workSubType ) {
+  mutation createWork ( $start: String! $execName: String! $workType: String! $workSubType: String $models: String) {
+    createWork ( start: $start execName: $execName workType: $workType workSubType: $workSubType models: $models) {
       id
       execName
       start
@@ -59,6 +59,15 @@ export const getCurWork = gql`
       workType
       workSubType
       noRecent
+      models {
+        id
+        name
+        article
+        prods {
+          id
+          fullnumber
+        }
+      }
     }
   }
 `

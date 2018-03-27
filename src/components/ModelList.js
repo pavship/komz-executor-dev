@@ -1,13 +1,11 @@
 import _ from 'lodash'
 import React, {Component} from 'react'
+import { graphql, compose } from "react-apollo"
 import { Accordion, Icon, Label, Header } from 'semantic-ui-react'
+
 import ProdList from './ProdList'
 
-// const ModelList = ({ deptModels }) => (
-//   <Item.Group divided>
-//    {deptModels.map(deptModel => <Item.Header key={deptModel.model.article}>{deptModel.model.name}</Item.Header>)}
-//   </Item.Group>
-// )
+import deptModelsQuery from '../graphql/deptModelsQuery'
 
 class ModelList extends Component {
 
@@ -22,11 +20,11 @@ class ModelList extends Component {
   }
 
   render() {
-
     const { activeIndex } = this.state
-    const { selectProd } = this.props
-
-    const deptModels = this.props.deptModels.map((deptModel, i) => {
+    const { selectProd, deptModelsQuery: { loading, error, deptModels } } = this.props
+    if (loading) return 'Загрузка'
+    if (error) return 'Ошибка загрузки данных'
+    const renderedModels = deptModels.map((deptModel, i) => {
       const allProdsCount = deptModel.prods.length
       const { name, article } = deptModel.model
       const active = _.includes(activeIndex, i)
@@ -39,20 +37,14 @@ class ModelList extends Component {
             onClick={this.handleClick}
           >
             <Icon name='dropdown' />
-            {/* <Header size='small' as='span'>{deptModel.model.name} */}
             <Header size='small' as='span'>{_.first( name.split(' ') )} {article}
               <Label color='grey'>
                 {allProdsCount}
-                {/* <Label.Detail>шт</Label.Detail> */}
               </Label>
-              {/* <Label circular color='grey' empty /> */}
-              {/* <Label circular color='grey' >1</Label> */}
             </Header>
           </Accordion.Title>
           { active &&
             <Accordion.Content active>
-              {/* {'deptModel.prods here'} */}
-              {/* <ProdList prods={deptModel.prods} selectProd={this.props.selectProd}/> */}
               <ProdList model={deptModel.model} prods={deptModel.prods} selectProd={selectProd}/>
             </Accordion.Content>
           }
@@ -62,10 +54,20 @@ class ModelList extends Component {
 
     return (
       <Accordion className='komz-sidebar-col-left'>
-        {deptModels}
+        {renderedModels}
       </Accordion>
     )
   }
 }
 
-export default ModelList
+export default compose(
+    graphql(
+        deptModelsQuery,
+        {
+            name: 'deptModelsQuery',
+            options: {
+                fetchPolicy: 'cache-and-network',
+            }
+        }
+    ),
+)(ModelList);
