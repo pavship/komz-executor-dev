@@ -49,9 +49,9 @@ export const chartWorks = gql`
     }
   }
 `
-export const getCurWork = gql`
-  query getCurWork {
-    getCurWork {
+export const curWork = gql`
+  query curWork {
+    curWork {
       id
       start
       fin

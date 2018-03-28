@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 export default gql`
   query deptModels {
     deptModels(
-      deptId: "cjbuuvddo4opm0147d178zmuy"
+      deptId: "cjbuuvk0v4s3p0162u894mowc"
     ) {
       id
       model {

@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { Accordion, Header, Segment, Message, Icon, List } from 'semantic-ui-react'
+import { Accordion, Header, Segment, Message, Icon, List, Button } from 'semantic-ui-react'
 
 import ProdList from './ProdList'
 
 class SelectedList extends Component {
-
   render() {
-    const { selected } = this.props
+    const { selected, deselect } = this.props
     return (
       <div>
         <Segment basic className='komz-no-margin'>
@@ -18,7 +17,10 @@ class SelectedList extends Component {
                 </Message.Content>
               </Message>
             : <div>
-                <Header dividing>Выбраны:</Header>
+                <Header dividing>
+                  Выбраны:
+                  <Icon name='cancel' className='komz-sidebar-col-right-remove' color='red' link onClick={deselect}/>
+                </Header>
                 <Accordion>
                 { selected.map((model, i) => {
                   const { id, name, article, prods } = model
@@ -33,7 +35,6 @@ class SelectedList extends Component {
                         <List size='medium' className='komz-sidebar-col-right-list'>
                           {prods.map(prod => <List.Item key={prod.id}>{prod.fullnumber}</List.Item>)}
                         </List>
-                        {/* <ProdList prods={prods} /> */}
                       </Accordion.Content>
                     </div>
                   )

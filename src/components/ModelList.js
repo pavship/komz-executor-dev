@@ -21,7 +21,7 @@ class ModelList extends Component {
 
   render() {
     const { activeIndex } = this.state
-    const { selectProd, deptModelsQuery: { loading, error, deptModels } } = this.props
+    const { selected, selectProd, deptModelsQuery: { loading, error, deptModels } } = this.props
     if (loading) return 'Загрузка'
     if (error) return 'Ошибка загрузки данных'
     const renderedModels = deptModels.map((deptModel, i) => {
@@ -67,6 +67,15 @@ export default compose(
             name: 'deptModelsQuery',
             options: {
                 fetchPolicy: 'cache-and-network',
+            },
+            props: ({ deptModelsQuery, ownProps }) => {
+              console.log(deptModelsQuery);
+              console.log(ownProps.selected);
+              return {
+                deptModelsQuery: {
+                  ...deptModelsQuery
+                }
+              }
             }
         }
     ),

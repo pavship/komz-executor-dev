@@ -39,7 +39,6 @@ class ExecControlPanel extends Component {
     const start = new Date()
     const { createWork, user: {name} } = this.props
     const execName = name
-    console.log(start, execName, workType, workSubType, models);
     createWork({ variables: { start, execName, workType, workSubType, models } })
     .then((obj) => {
       this.props.refetchCurWork()

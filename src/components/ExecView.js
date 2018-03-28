@@ -9,7 +9,7 @@ import ModelList from './ModelList'
 import SelectedList from './SelectedList'
 import ExecControlPanel from './ExecControlPanel'
 
-import { getCurWork } from '../graphql/workQueries'
+import { curWork } from '../graphql/workQueries'
 
 class ExecView extends Component {
   state = {
@@ -21,10 +21,11 @@ class ExecView extends Component {
   }
   countProds = (models) => models.reduce((res, model) => { return res + model.prods.length }, 0)
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.getCurWork.getCurWork) return
-    const nextModels = nextProps.getCurWork.getCurWork.models
-    if (!this.props.getCurWork.getCurWork ||
-      !_.isEqual(nextModels, this.props.getCurWork.getCurWork.models)) {
+    if (!nextProps.curWork.curWork) return
+    const nextModels = nextProps.curWork.curWork.models
+    if (!nextModels) return
+    if (!this.props.curWork.curWork ||
+      !_.isEqual(nextModels, this.props.curWork.curWork.models)) {
       this.setState({
         selected: nextModels || [],
         prodCount: this.countProds(nextModels || [])
@@ -55,9 +56,10 @@ class ExecView extends Component {
       prodCount: this.countProds(newVal)
     })
   }
+  deselect = () => this.setState({ selected: [], prodCount: 0 })
   render() {
     const { selected, prodCount, mainWorkIsInProgress } = this.state
-    const { user, sidebarVisible, toggleSidebar, getCurWork: {loading, error, refetch, getCurWork} } = this.props
+    const { user, sidebarVisible, toggleSidebar, curWork: {loading, error, refetch, curWork} } = this.props
     return (
       <Fragment>
         <NavBar
@@ -70,14 +72,14 @@ class ExecView extends Component {
         <Sidebar.Pushable as={Segment} className='komz-pushable'>
           <Sidebar as={Card} animation='overlay' visible={sidebarVisible} className='komz-sidebar'>
             <div className='komz-sidebar-container'>
-              <ModelList selectProd={this.selectProd}/>
-              <SelectedList selected={selected} />
+              <ModelList selected={selected} selectProd={this.selectProd}/>
+              <SelectedList selected={selected} deselect={this.deselect} />
             </div>
           </Sidebar>
           <Sidebar.Pusher>
             { loading ? 'Загрузка' :
               error ? 'Ошибка загрузки данных' :
-              <ExecControlPanel user={user} selected={selected} curWork={getCurWork} refetchCurWork={refetch}/>
+              <ExecControlPanel user={user} selected={selected} curWork={curWork} refetchCurWork={refetch}/>
             }
           </Sidebar.Pusher>
         </Sidebar.Pushable>
@@ -89,9 +91,9 @@ class ExecView extends Component {
 // export default ExecView
 export default compose(
     graphql(
-        getCurWork,
+        curWork,
         {
-            name: 'getCurWork',
+            name: 'curWork',
             // options: {
             //     fetchPolicy: 'cache-and-network',
             // }

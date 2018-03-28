@@ -109,6 +109,12 @@ body {
   margin-left: 10px !important;
 }
 
+.komz-sidebar-col-right-remove {
+  font-size: 1em !important;
+  margin: 0 0 12px 10px !important;
+  vertical-align: bottom;
+}
+
 /* EXECUTOR VIEW */
 
 .komz-exec-status-bar {
