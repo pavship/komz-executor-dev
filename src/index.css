@@ -71,9 +71,9 @@ body {
 
 .komz-exec-container {
   display: block;
-  margin-left: auto!important;
+  /* margin-left: auto!important;
   margin-right: auto!important;
-  max-width: 320px !important;
+  max-width: 320px !important; */
 }
 
 .komz-navbar {
