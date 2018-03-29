@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { Accordion, Header, Segment, Message, Icon, List, Button } from 'semantic-ui-react'
-
-import ProdList from './ProdList'
+import { Accordion, Header, Segment, Message, Icon, List } from 'semantic-ui-react'
 
 class SelectedList extends Component {
   render() {

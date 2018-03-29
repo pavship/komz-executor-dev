@@ -19,7 +19,10 @@ export default class NavBar extends Component {
                 className='komz-navbar-menu-left-item'>
                 { !prodCount ? 'Взять в работу' :
                   <Fragment>
-                    { mainWorkIsInProgress ? 'В работе ' : 'Выбрано ' }
+                    { mainWorkIsInProgress
+                      ? <span className='komz-wt-main-color'>В работе </span>
+                      : 'Выбрано '
+                    }
                     <Label color='grey' >{prodCount}</Label>
                   </Fragment>
                 }

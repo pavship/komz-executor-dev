@@ -21,7 +21,7 @@ class ModelList extends Component {
 
   render() {
     const { activeIndex } = this.state
-    const { selected, selectProd, deptModelsQuery: { loading, error, deptModels } } = this.props
+    const { selectProd, deptModelsQuery: { loading, error, deptModels } } = this.props
     if (loading) return 'Загрузка'
     if (error) return 'Ошибка загрузки данных'
     const renderedModels = deptModels.map((deptModel, i) => {

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import { graphql, compose } from "react-apollo"
 
+// import { Sidebar, Segment, Card, Modal, Button, Header, Icon } from 'semantic-ui-react'
 import { Sidebar, Segment, Card } from 'semantic-ui-react'
 
 import NavBar from './NavBar'
@@ -22,6 +23,12 @@ class ExecView extends Component {
   countProds = (models) => models.reduce((res, model) => { return res + model.prods.length }, 0)
   componentWillReceiveProps(nextProps) {
     if (!nextProps.curWork.curWork) return
+    // define mainWorkIsInProgress status
+    const mwRunning = (nextProps.curWork.curWork.workType === 'Прямые' && !nextProps.curWork.curWork.fin)
+    this.setState({ mainWorkIsInProgress: mwRunning })
+    // if (mwRunning !== this.state.mainWorkIsInProgress) {
+    //   this.setState({ mainWorkIsInProgress: mwRunning })
+    // }
     const nextModels = nextProps.curWork.curWork.models
     if (!nextModels) return
     if (!this.props.curWork.curWork ||
@@ -34,7 +41,9 @@ class ExecView extends Component {
   }
   selectProd = (model) => {
     const { selected } = this.state
-    const foundModel = _.find(selected, {id: model.id});
+    const foundModel = _.find(selected, {id: model.id})
+    // for now, only 1 model is available to work on
+    if (!foundModel && selected.length) return
     const newVal =
       !foundModel
       ? [...selected, model]
@@ -69,6 +78,20 @@ class ExecView extends Component {
           prodCount={prodCount}
           mainWorkIsInProgress={mainWorkIsInProgress}
         />
+        {/* <Modal trigger={<Button>Basic Modal</Button>} basic size='small'>
+          <Header icon='archive' content='Archive Old Messages' />
+          <Modal.Content>
+            <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button basic color='red' inverted>
+              <Icon name='remove' /> No
+            </Button>
+            <Button color='green' inverted>
+              <Icon name='checkmark' /> Yes
+            </Button>
+          </Modal.Actions>
+        </Modal> */}
         <Sidebar.Pushable as={Segment} className='komz-pushable'>
           <Sidebar as={Card} animation='overlay' visible={sidebarVisible} className='komz-sidebar'>
             <div className='komz-sidebar-container'>

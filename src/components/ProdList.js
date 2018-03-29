@@ -14,7 +14,7 @@ class ProdList extends Component {
     })
   }
   render() {
-    const { prods, selectProd } = this.props
+    const { prods } = this.props
 
     return (
       <List divided selection size='medium'>

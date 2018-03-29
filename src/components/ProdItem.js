@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { List, Label } from 'semantic-ui-react'
 
 const ProdItem = ({ selectProd, prod: { id, fullnumber, isSpoiled, hasDefect, checked } }) => {
   return (
+    // <List.Item onClick={() => selectProd({id, fullnumber})} active={checked}>
     <List.Item onClick={() => selectProd({id, fullnumber})} active={checked}>
       <List.Content>
           <List.Icon name={checked ? 'checkmark box' : 'square outline'} />

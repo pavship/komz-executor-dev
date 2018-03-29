@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { graphql, compose } from "react-apollo"
-import { DateTime } from 'luxon'
+// import { DateTime } from 'luxon'
 
-import { Container, Segment, Button, Icon, Label, Progress } from 'semantic-ui-react'
+// import { Button, Segment, Label, Progress } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
 import { createWork } from '../graphql/workQueries'
 import { finishWork } from '../graphql/workQueries'
@@ -71,10 +72,10 @@ class ExecControlPanel extends Component {
   }
   render() {
     const { user, selected, curWork } = this.props
-    const { time } = this.state
+    // const { time } = this.state
     return (
       <Fragment>
-        <Segment basic className='komz-exec-status-bar'>
+        {/* <Segment basic className='komz-exec-status-bar'>
           <b>6:00/9:00 | </b>
           <Label empty circular className='komz-wt-main' />
           <Label empty circular className='komz-wt-aux' />
@@ -83,18 +84,19 @@ class ExecControlPanel extends Component {
           <Label empty circular className='komz-wt-rest' />
           <b>1:00/1:15</b>
           <Progress percent={66} color='black' active attached='bottom' />
-        </Segment>
+        </Segment> */}
         <div className='komz-exec-grid'>
           <div className='komz-exec-col-left'>
             <div className='komz-exec-button-container komz-wt-aside'>
               <Button fluid size='small' className='komz-exec-button'
                 worktype='Побочные' active={!curWork.fin && curWork.workType === 'Побочные'}
-                onClick={this.handleWork} >Административ- ные/Побочные задачи и работа с этой системой</Button>
+                // onClick={this.handleWork} >Административ- ные/Побочные задачи и работа с этой системой</Button>
+                onClick={this.handleWork} >Все прочие</Button>
             </div>
             <div className='komz-exec-button-container komz-wt-rest'>
               <Button fluid size='small' className='komz-exec-button'
                 worktype='Отдых' active={!curWork.fin && curWork.workType === 'Отдых'}
-                onClick={this.handleWork} >Отдых/обед</Button>
+                onClick={this.handleWork} >Перерыв/обед</Button>
             </div>
             <div className='komz-exec-button-container komz-wt-negative'>
               <Button fluid size='small' className='komz-exec-button'
@@ -128,14 +130,29 @@ class ExecControlPanel extends Component {
                 active={!curWork.fin && curWork.workType === 'Косвенные' && curWork.workSubType === 'ТО оборудования'}
                 onClick={this.handleWork} >ТО оборудования</Button>
             </div>
-            <div className='komz-exec-button-container komz-wt-aux'>
+            {/* <div className='komz-exec-button-container komz-wt-aux'>
               <Button fluid size='small' className='komz-exec-button'
                 worktype='Косвенные'
                 active={!curWork.fin && curWork.workType === 'Косвенные' && !curWork.workSubType}
                 onClick={this.handleWork} >Другие вспомогательные</Button>
-            </div>
+            </div> */}
           </div>
         </div>
+          {/* <Button.Group vertical fluid>
+            { user.workTypes.map((type, i) => (
+            <Button color='green' key={i}
+              worktype='Прямые' worksubtype={type}
+              active={!curWork.fin && curWork.workType === 'Прямые' && curWork.workSubType === type}
+              disabled={!selected.length}
+              onClick={this.handleWork}
+              >{type}
+            </Button>
+          ))}
+          </Button.Group>
+          <Button fluid color='blue'
+            worktype='Косвенные' worksubtype='ТО оборудования'
+            active={!curWork.fin && curWork.workType === 'Косвенные' && curWork.workSubType === 'ТО оборудования'}
+            onClick={this.handleWork} >ТО оборудования</Button> */}
       </Fragment>
     )
   }
