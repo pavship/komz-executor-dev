@@ -69,11 +69,53 @@ export default compose(
                 fetchPolicy: 'cache-and-network',
             },
             props: ({ deptModelsQuery, ownProps }) => {
-              console.log(deptModelsQuery);
-              console.log(ownProps.selected);
+              // console.log(deptModelsQuery);
+              if (!deptModelsQuery.deptModels) return { deptModelsQuery }
+              if (!ownProps.selected.length) return {
+                deptModelsQuery: {
+                  ...deptModelsQuery,
+                  deptModels: _.sortBy(
+                    deptModelsQuery.deptModels,
+                    function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
+                  )
+                }
+              }
               return {
                 deptModelsQuery: {
-                  ...deptModelsQuery
+                  ...deptModelsQuery,
+                  deptModels: _.sortBy(
+                    [
+                      ...ownProps.selected.map(model => {
+                        const deptModel = _.find(deptModelsQuery.deptModels, {model: {id: model.id}})
+                        return {
+                          ...deptModel,
+                          prods: [
+                            ...model.prods.map(prod => {
+                              const prodFromDeptModel = _.find(deptModel.prods, {id: prod.id})
+                              return {
+                                ...prodFromDeptModel,
+                                checked: true
+                              }
+                            }),
+                            ...deptModel.prods.filter(prod => {
+                              return !_.includes( _.map(model.prods, 'id'), prod.id )
+                            }),
+                          ]
+                        }
+                      }),
+                      ...deptModelsQuery.deptModels.filter(deptModel => {
+                        return !_.includes( _.map(ownProps.selected, 'id'), deptModel.model.id )
+                      }),
+                      // ...deptModelsQuery.deptModels.filter(deptModel => {
+                      //   return _.includes( _.map(ownProps.selected, 'id'), deptModel.model.id )
+                      // })
+                    ],
+                    function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
+                  )
+                  // .sort((a, b) =>
+                  //   (a.model.name.slice(0, a.model.name.indexOf(' ')) & ' ' & a.model.article) >
+                  //   (b.model.name.slice(0, b.model.name.indexOf(' ')) & ' ' & b.model.article) ? 1 : -1
+                  // )
                 }
               }
             }
