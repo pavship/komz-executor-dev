@@ -10,6 +10,15 @@ export const createWork = gql`
       time
       workType
       workSubType
+      models {
+        id
+        name
+        article
+        prods {
+          id
+          fullnumber
+        }
+      }
     }
   }
 `
@@ -23,6 +32,15 @@ export const finishWork = gql`
       time
       workType
       workSubType
+      models {
+        id
+        name
+        article
+        prods {
+          id
+          fullnumber
+        }
+      }
     }
   }
 `

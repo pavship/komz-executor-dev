@@ -9,6 +9,7 @@ import Amplify, {I18n, Auth} from "aws-amplify"
 import { withAuthenticator } from "aws-amplify-react"
 
 const App = () => {
+  // console.log('> App');
   return (
     <Fragment>
       <Main />

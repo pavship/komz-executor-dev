@@ -11,7 +11,11 @@ class Main extends Component {
     leftSidebarVisible: false
   }
   toggleSidebar = () => this.setState({ leftSidebarVisible: !this.state.leftSidebarVisible })
+  // componentWillReceiveProps(next){
+  //   console.log(next, this.props);
+  // }
   render() {
+    // console.log('> Main');
     const { leftSidebarVisible } = this.state
     const { currentUser: { loading, error, currentUser } } = this.props
     if (loading) return 'Загрузка'
@@ -41,9 +45,9 @@ export default compose(
             //   loading: data.loading
             // }),
             name: 'currentUser',
-            options: {
-                fetchPolicy: 'cache-and-network',
-            }
+            // options: {
+            //     fetchPolicy: 'cache-and-network',
+            // }
         }
     ),
 )(Main);

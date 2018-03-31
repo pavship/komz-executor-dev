@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { graphql, compose } from "react-apollo"
 // import { DateTime } from 'luxon'
 
 // import { Button, Segment, Label, Progress } from 'semantic-ui-react'
-import { Button } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
 
 import { createWork } from '../graphql/workQueries'
 import { finishWork } from '../graphql/workQueries'
@@ -56,25 +56,36 @@ class ExecControlPanel extends Component {
     })
   }
   handleWork = (event, e) => {
-    const { curWork } = this.props
+    const { curWork, blockPanel } = this.props
     const selected = (e.worktype === 'Прямые') ? JSON.stringify(this.props.selected) : undefined
     // start work if currently work isn't running
     if (curWork.fin || curWork.noRecent) {
+      blockPanel(1)
       this.createWork(e.worktype, e.worksubtype, selected)
     } else {
       if (e.worktype === curWork.workType && (e.worksubtype || null) === curWork.workSubType) {
+        blockPanel(1)
         this.finishWork()
       } else {
+        blockPanel(2)
         this.finishWork()
         this.createWork(e.worktype, e.worksubtype, selected)
       }
     }
   }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log(nextProps, prevState);
+  //   return null
+  // }
+  // componentWillReceiveProps(next){
+  //   console.log(next, this.props);
+  // }
   render() {
-    const { user, selected, curWork } = this.props
+    // console.log('> CtrlPanel');
+    const { user, selected, curWork, panelBlockLevel } = this.props
     // const { time } = this.state
     return (
-      <Fragment>
+      <Segment basic className='komz-no-padding' loading={panelBlockLevel > 0}>
         {/* <Segment basic className='komz-exec-status-bar'>
           <b>6:00/9:00 | </b>
           <Label empty circular className='komz-wt-main' />
@@ -153,7 +164,7 @@ class ExecControlPanel extends Component {
             worktype='Косвенные' worksubtype='ТО оборудования'
             active={!curWork.fin && curWork.workType === 'Косвенные' && curWork.workSubType === 'ТО оборудования'}
             onClick={this.handleWork} >ТО оборудования</Button> */}
-      </Fragment>
+      </Segment>
     )
   }
 }

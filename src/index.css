@@ -66,14 +66,17 @@ body {
 .komz-no-margin {
   margin: 0 !important;
 }
+.komz-no-padding {
+  padding: 0 !important;
+}
 
 /* LAYOUT */
 
 .komz-exec-container {
   display: block;
-  /* margin-left: auto!important;
+  margin-left: auto!important;
   margin-right: auto!important;
-  max-width: 320px !important; */
+  max-width: 420px !important;
 }
 
 .komz-navbar {
