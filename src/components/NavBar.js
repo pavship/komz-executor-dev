@@ -30,7 +30,7 @@ export default class NavBar extends Component {
           </Menu.Menu>
         }
         <Menu.Menu position='right'>
-          <Menu.Item name={user.name} />
+          <Menu.Item name={user.name} className='komz-navbar-menu-item-profile'/>
           <Menu.Item name='sign out' onClick={this.signOut}>
             <Icon name='sign out' />
           </Menu.Item>

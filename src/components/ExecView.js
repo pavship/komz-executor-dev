@@ -18,7 +18,9 @@ class ExecView extends Component {
     selected: [],
     //selected products qty
     prodCount: 0,
-    //mainWorkIsInProgress used in the NavBar to indicate that executor works with selected products
+    //mainWorkIsInProgress used
+      // in the NavBar to indicate that executor works with selected products
+      // in the Sidebar to restrict altering of selected set of products
     mainWorkIsInProgress: false,
     //block CtrlPanel until Exec gets new currentWork from server
     panelBlockLevel: 1
@@ -46,7 +48,10 @@ class ExecView extends Component {
     })
   }
   selectProd = (model) => {
-    const { selected } = this.state
+    const { selected, mainWorkIsInProgress } = this.state
+    // if mainWorkIsInProgress no alters allowed
+    if (mainWorkIsInProgress) return
+    // find provided model in selection set
     const foundModel = _.find(selected, {id: model.id})
     // for now, selection is limited to 1 model
     if (!foundModel && selected.length) return
@@ -71,7 +76,11 @@ class ExecView extends Component {
       prodCount: this.countProds(newVal)
     })
   }
-  deselect = () => this.setState({ selected: [], prodCount: 0 })
+  deselect = () => {
+    // if mainWorkIsInProgress no alters allowed
+    if (this.state.mainWorkIsInProgress) return
+    this.setState({ selected: [], prodCount: 0 })
+  }
   blockPanel = (level) => this.setState({ panelBlockLevel: level })
   render() {
     // console.log('> ExecView');
@@ -103,8 +112,15 @@ class ExecView extends Component {
         <Sidebar.Pushable as={Segment} className='komz-pushable'>
           <Sidebar as={Card} animation='overlay' visible={sidebarVisible} className='komz-sidebar'>
             <div className='komz-sidebar-container'>
-              <ModelList selected={selected} selectProd={this.selectProd}/>
-              <SelectedList selected={selected} deselect={this.deselect} />
+              <ModelList
+                selected={selected}
+                selectProd={this.selectProd}
+              />
+              <SelectedList
+                selected={selected}
+                deselect={this.deselect}
+                mainWorkIsInProgress={mainWorkIsInProgress}
+              />
             </div>
           </Sidebar>
           <Sidebar.Pusher>

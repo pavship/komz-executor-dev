@@ -88,6 +88,10 @@ body {
   padding-bottom: 0 !important;
 }
 
+.komz-navbar-menu-item-profile::before {
+  background: none !important;
+}
+
 .komz-pushable {
   margin-top: 0px !important;
   height: 99999px !important;
@@ -110,10 +114,14 @@ body {
   margin-left: 10px !important;
 }
 
-.komz-sidebar-col-right-remove {
+.komz-sidebar-col-right-icon {
   font-size: 1em !important;
   margin: 0 0 12px 10px !important;
   vertical-align: bottom;
+}
+
+.komz-sidebar-col-right-message {
+  padding: 1em !important;
 }
 
 /* EXECUTOR VIEW */

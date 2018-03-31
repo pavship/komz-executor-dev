@@ -3,7 +3,7 @@ import { Accordion, Header, Segment, Message, Icon, List } from 'semantic-ui-rea
 
 class SelectedList extends Component {
   render() {
-    const { selected, deselect } = this.props
+    const { selected, deselect, mainWorkIsInProgress } = this.props
     return (
       <div>
         <Segment basic className='komz-no-margin'>
@@ -17,7 +17,9 @@ class SelectedList extends Component {
             : <div>
                 <Header dividing>
                   Выбраны:
-                  <Icon name='cancel' className='komz-sidebar-col-right-remove' color='red' link onClick={deselect}/>
+                  { !mainWorkIsInProgress &&
+                    <Icon name='cancel' className='komz-sidebar-col-right-icon' color='red' link onClick={deselect}/>
+                  }
                 </Header>
                 <Accordion>
                 { selected.map((model, i) => {
@@ -38,6 +40,14 @@ class SelectedList extends Component {
                   )
                 })}
                 </Accordion>
+                { mainWorkIsInProgress &&
+                  <Message className='komz-sidebar-col-right-message'>
+                    <Message.Content>
+                      <Icon name='lock' />
+                      Выбор заблокирован до завершения работы с выбранной продукции
+                    </Message.Content>
+                  </Message>
+                }
               </div>
           }
         </Segment>
