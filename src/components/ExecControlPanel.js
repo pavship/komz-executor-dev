@@ -3,7 +3,9 @@ import { graphql, compose } from "react-apollo"
 // import { DateTime } from 'luxon'
 
 // import { Button, Segment, Label, Progress } from 'semantic-ui-react'
-import { Segment, Button } from 'semantic-ui-react'
+// import { Segment, Button } from 'semantic-ui-react'
+//new variant:
+import { Segment, Button, Grid, Menu } from 'semantic-ui-react'
 
 import { createWork } from '../graphql/workQueries'
 import { finishWork } from '../graphql/workQueries'
@@ -12,7 +14,10 @@ class ExecControlPanel extends Component {
   state = {
     timer: null,
     time: 0,
+    activeItem: '',
   }
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
   timer1
   componentDidMount() {
       // this.timer1 = setInterval(() => {
@@ -84,8 +89,34 @@ class ExecControlPanel extends Component {
     // console.log('> CtrlPanel');
     const { user, selected, curWork, panelBlockLevel } = this.props
     // const { time } = this.state
+    const { activeItem } = this.state
+    const colorsA = [{
+      title: 'Все прочие',
+      color: 'grey',
+      style: 'aside',
+    }, {
+      title: 'Перерыв/обед',
+      color: 'yellow',
+      style: 'rest',
+    },{
+      title: 'Простой',
+      color: 'yellow',
+      style: 'negative',
+    },{
+      title: 'Экстренный случай',
+      color: 'olive',
+      style: 'negative',
+    },{
+      title: 'Фрезерная обработка/Наладка',
+      color: 'green',
+      style: 'main',
+    },{
+      title: 'ТО оборудования',
+      color: 'blue',
+      style: 'aux',
+    }]
     return (
-      <Segment basic className='komz-no-padding' loading={panelBlockLevel > 0}>
+      <Segment basic inverted className='komz-no-padding' loading={panelBlockLevel > 0}>
         {/* <Segment basic className='komz-exec-status-bar'>
           <b>6:00/9:00 | </b>
           <Label empty circular className='komz-wt-main' />
@@ -96,6 +127,24 @@ class ExecControlPanel extends Component {
           <b>1:00/1:15</b>
           <Progress percent={66} color='black' active attached='bottom' />
         </Segment> */}
+        <Menu fluid vertical size='huge' className='komz-exec-control-panel'>
+          {colorsA.map(c => (
+            <Menu.Item
+              key={c.title}
+              name={c.title}
+              active={activeItem === c.title}
+              // color={c.color}
+              onClick={this.handleItemClick}
+              className={c.style && `komz-color-wt-${c.style}`} >
+              {c.title}
+            </Menu.Item>
+          ))}
+          {/* <Menu.Item name='account' active={activeItem === 'account'} onClick={this.handleItemClick} />
+          <Menu.Item name='settings' active={activeItem === 'settings'} onClick={this.handleItemClick} />
+          <Menu.Item name='work' active={activeItem === 'work'} onClick={this.handleItemClick} />
+          <Menu.Item name='job' active={activeItem === 'job'} onClick={this.handleItemClick} />
+          <Menu.Item name='Валли' active={activeItem === 'Валли'} onClick={this.handleItemClick} /> */}
+        </Menu>
         <div className='komz-exec-grid'>
           <div className='komz-exec-col-left'>
             <div className='komz-exec-button-container komz-wt-aside'>

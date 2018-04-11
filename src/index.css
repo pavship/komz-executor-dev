@@ -139,6 +139,22 @@ body {
   vertical-align: bottom !important;
 }
 
+.komz-exec-control-panel {
+  text-align: center;
+  background: #818a92 !important;
+}
+
+.komz-exec-control-panel .item {
+  font-size: larger;
+  color: black !important;
+}
+
+.komz-exec-control-panel .active.item {
+  font-weight: bold !important;
+  font-size: larger;
+  color: black;
+}
+
 .komz-exec-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -231,17 +247,33 @@ body {
   /* background-color: rgba(255, 179, 99, 1) !important; */
   background-color: rgba(0, 0, 0, 0.2) !important;
 }
+.active.item.komz-color-wt-aside {
+  color: rgba(106, 42, 125, 1) !important;
+}
 .komz-wt-rest {
   background-color: rgba(247, 239, 129, 1) !important;
 }
+.active.item.komz-color-wt-rest {
+  color: rgba(251, 189, 8, 1) !important;
+}
 .komz-wt-negative {
-  background-color: rgba(252, 120, 113, 1) !important;
+  /* background-color: rgba(252, 120, 113, 1) !important; */
+  background-color: rgba(154, 34, 34, 1) !important;
+}
+.active.item.komz-color-wt-negative {
+  color: rgba(154, 34, 34, 1) !important;
 }
 .komz-wt-main {
   background-color: rgba(191, 221, 126, 1) !important;
 }
+.active.item.komz-color-wt-main {
+  color: rgba(22, 99, 40, 1) !important;
+}
 .komz-wt-aux {
   background-color: rgba(102, 158, 214, 1) !important;
+}
+.active.item.komz-color-wt-aux {
+  color: rgba(30, 96, 146, 1) !important;
 }
 
 .komz-wt-main-color {
