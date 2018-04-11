@@ -44,29 +44,6 @@ export const finishWork = gql`
     }
   }
 `
-export const allWorks = gql`
-  query allWorks {
-    allWorks {
-      id
-      start
-      fin
-      time
-    }
-  }
-`
-export const chartWorks = gql`
-  query chartWorks ( $queryFrom: String!, $from: String!, $to: String ) {
-    chartWorks ( queryFrom: $queryFrom, from: $from, to: $to ) {
-      id
-      execName
-      start
-      fin
-      time
-      workType
-      workSubType
-    }
-  }
-`
 export const curWork = gql`
   query curWork {
     curWork {
@@ -86,19 +63,6 @@ export const curWork = gql`
           fullnumber
         }
       }
-    }
-  }
-`
-export const newWork = gql`
-  subscription newWork {
-    newWork {
-      id
-      execName
-      start
-      fin
-      time
-      workType
-      workSubType
     }
   }
 `

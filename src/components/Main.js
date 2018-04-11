@@ -21,7 +21,7 @@ class Main extends Component {
     if (loading) return 'Загрузка'
     if (error) return 'Ошибка'
     return (
-      <div className={(currentUser.isDisp) ? 'komz-disp-container' : 'komz-exec-container'}>
+      <div className='komz-exec-container'>
         { currentUser.isDisp ? (
           <div>
             Похоже, Вы являетесь диспетчером. Панель диспетчера доступна по адресу: <a
