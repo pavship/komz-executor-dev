@@ -151,7 +151,7 @@ export default compose(
             //     fetchPolicy: 'cache-and-network',
             // },
             props: props => {
-              console.log('> resolving curWork')
+              // console.log('> resolving curWork')
               return {
                 ...props
               }

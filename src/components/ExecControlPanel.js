@@ -5,7 +5,7 @@ import { graphql, compose } from "react-apollo"
 // import { Button, Segment, Label, Progress } from 'semantic-ui-react'
 // import { Segment, Button } from 'semantic-ui-react'
 //new variant:
-import { Segment, Button, Grid, Menu } from 'semantic-ui-react'
+import { Segment, Button, Menu, Icon } from 'semantic-ui-react'
 
 import { createWork } from '../graphql/workQueries'
 import { finishWork } from '../graphql/workQueries'
@@ -14,10 +14,7 @@ class ExecControlPanel extends Component {
   state = {
     timer: null,
     time: 0,
-    activeItem: '',
   }
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
   timer1
   componentDidMount() {
       // this.timer1 = setInterval(() => {
@@ -82,41 +79,42 @@ class ExecControlPanel extends Component {
   //   console.log(nextProps, prevState);
   //   return null
   // }
-  // componentWillReceiveProps(next){
-  //   console.log(next, this.props);
-  // }
   render() {
     // console.log('> CtrlPanel');
     const { user, selected, curWork, panelBlockLevel } = this.props
     // const { time } = this.state
-    const { activeItem } = this.state
-    const colorsA = [{
-      title: 'Все прочие',
-      color: 'grey',
-      style: 'aside',
-    }, {
+    const workTypes = [
+      ...user.workTypes.map(type => ({
+        worktype: 'Прямые',
+        worksubtype: type,
+        title: type,
+        style: 'main',
+      })), {
+      worktype: 'Косвенные',
+      worksubtype: 'ТО оборудования',
+      title: 'ТО оборудования',
+      style: 'aux',
+    },{
+      worktype: 'Отдых',
       title: 'Перерыв/обед',
-      color: 'yellow',
       style: 'rest',
     },{
+      worktype: 'Побочные',
+      title: 'Все прочие',
+      style: 'aside',
+    }, {
+      worktype: 'Негативные',
+      worksubtype: 'Простой',
       title: 'Простой',
-      color: 'yellow',
       style: 'negative',
     },{
+      worktype: 'Негативные',
+      worksubtype: 'Экстренный случай',
       title: 'Экстренный случай',
-      color: 'olive',
       style: 'negative',
-    },{
-      title: 'Фрезерная обработка/Наладка',
-      color: 'green',
-      style: 'main',
-    },{
-      title: 'ТО оборудования',
-      color: 'blue',
-      style: 'aux',
     }]
     return (
-      <Segment basic inverted className='komz-no-padding' loading={panelBlockLevel > 0}>
+      <Segment basic className='komz-no-padding' loading={panelBlockLevel > 0}>
         {/* <Segment basic className='komz-exec-status-bar'>
           <b>6:00/9:00 | </b>
           <Label empty circular className='komz-wt-main' />
@@ -128,97 +126,29 @@ class ExecControlPanel extends Component {
           <Progress percent={66} color='black' active attached='bottom' />
         </Segment> */}
         <Menu fluid vertical size='huge' className='komz-exec-control-panel'>
-          {colorsA.map(c => (
+          {workTypes.map(wt => (
             <Menu.Item
-              key={c.title}
-              name={c.title}
-              active={activeItem === c.title}
-              // color={c.color}
-              onClick={this.handleItemClick}
-              className={c.style && `komz-color-wt-${c.style}`} >
-              {c.title}
+              key={wt.title}
+              name={wt.title}
+              active={!curWork.fin &&
+                      curWork.workType === wt.worktype &&
+                      (!wt.worksubtype || curWork.workSubType === wt.worksubtype)}
+              worktype={wt.worktype}
+              worksubtype={wt.worksubtype}
+              onClick={this.handleWork}
+              className={wt.style && `komz-color-wt-${wt.style}`}
+              disabled={wt.worktype === 'Прямые' && !selected.length} >
+              { (wt.worktype === 'Прямые' && !selected.length) &&
+                <Icon name='lock' />
+              }
+              {wt.title}
             </Menu.Item>
           ))}
-          {/* <Menu.Item name='account' active={activeItem === 'account'} onClick={this.handleItemClick} />
-          <Menu.Item name='settings' active={activeItem === 'settings'} onClick={this.handleItemClick} />
-          <Menu.Item name='work' active={activeItem === 'work'} onClick={this.handleItemClick} />
-          <Menu.Item name='job' active={activeItem === 'job'} onClick={this.handleItemClick} />
-          <Menu.Item name='Валли' active={activeItem === 'Валли'} onClick={this.handleItemClick} /> */}
         </Menu>
-        <div className='komz-exec-grid'>
-          <div className='komz-exec-col-left'>
-            <div className='komz-exec-button-container komz-wt-aside'>
-              <Button fluid size='small' className='komz-exec-button'
-                worktype='Побочные' active={!curWork.fin && curWork.workType === 'Побочные'}
-                // onClick={this.handleWork} >Административ- ные/Побочные задачи и работа с этой системой</Button>
-                onClick={this.handleWork} >Все прочие</Button>
-            </div>
-            <div className='komz-exec-button-container komz-wt-rest'>
-              <Button fluid size='small' className='komz-exec-button'
-                worktype='Отдых' active={!curWork.fin && curWork.workType === 'Отдых'}
-                onClick={this.handleWork} >Перерыв/обед</Button>
-            </div>
-            <div className='komz-exec-button-container komz-wt-negative'>
-              <Button fluid size='small' className='komz-exec-button'
-                worktype='Негативные' worksubtype='Простой'
-                active={!curWork.fin && curWork.workType === 'Негативные' && curWork.workSubType === 'Простой'}
-                onClick={this.handleWork} >Простой</Button>
-            </div>
-            <div className='komz-exec-button-container komz-wt-negative'>
-              <Button fluid size='small' className='komz-exec-button'
-                worktype='Негативные' worksubtype='Экстренный случай'
-                active={!curWork.fin && curWork.workType === 'Негативные' && curWork.workSubType === 'Экстренный случай'}
-                onClick={this.handleWork} >Экстренный случай</Button>
-            </div>
-          </div>
-          <div className='komz-exec-col-right'>
-            { user.workTypes.map((type, i) => (
-                <div className='komz-exec-button-container komz-wt-main' key={i}>
-                  <Button fluid size='small' className='komz-exec-button'
-                    worktype='Прямые' worksubtype={type}
-                    active={!curWork.fin && curWork.workType === 'Прямые' && curWork.workSubType === type}
-                    disabled={!selected.length}
-                    onClick={this.handleWork}
-                    >{type}
-                  </Button>
-                </div>
-              ))
-            }
-            <div className='komz-exec-button-container komz-wt-aux'>
-              <Button fluid size='small' className='komz-exec-button'
-                worktype='Косвенные' worksubtype='ТО оборудования'
-                active={!curWork.fin && curWork.workType === 'Косвенные' && curWork.workSubType === 'ТО оборудования'}
-                onClick={this.handleWork} >ТО оборудования</Button>
-            </div>
-            {/* <div className='komz-exec-button-container komz-wt-aux'>
-              <Button fluid size='small' className='komz-exec-button'
-                worktype='Косвенные'
-                active={!curWork.fin && curWork.workType === 'Косвенные' && !curWork.workSubType}
-                onClick={this.handleWork} >Другие вспомогательные</Button>
-            </div> */}
-          </div>
-        </div>
-          {/* <Button.Group vertical fluid>
-            { user.workTypes.map((type, i) => (
-            <Button color='green' key={i}
-              worktype='Прямые' worksubtype={type}
-              active={!curWork.fin && curWork.workType === 'Прямые' && curWork.workSubType === type}
-              disabled={!selected.length}
-              onClick={this.handleWork}
-              >{type}
-            </Button>
-          ))}
-          </Button.Group>
-          <Button fluid color='blue'
-            worktype='Косвенные' worksubtype='ТО оборудования'
-            active={!curWork.fin && curWork.workType === 'Косвенные' && curWork.workSubType === 'ТО оборудования'}
-            onClick={this.handleWork} >ТО оборудования</Button> */}
       </Segment>
     )
   }
 }
-
-// export default ExecControlPanel
 
 export default compose(
     // graphql(
