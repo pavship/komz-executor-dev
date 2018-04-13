@@ -2,7 +2,6 @@ import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import { graphql, compose } from "react-apollo"
 
-// import { Sidebar, Segment, Card, Modal, Button, Header, Icon } from 'semantic-ui-react'
 import { Sidebar, Segment, Card } from 'semantic-ui-react'
 
 import NavBar from './NavBar'
@@ -14,6 +13,8 @@ import { curWork } from '../graphql/workQueries'
 
 class ExecView extends Component {
   state = {
+    // product sidebar visibility state
+    sidebarVisible: false,
     //selected products that executor works with
     selected: [],
     //selected products qty
@@ -25,6 +26,7 @@ class ExecView extends Component {
     //block CtrlPanel until Exec gets new currentWork from server
     panelBlockLevel: 1
   }
+  toggleSidebar = () => this.setState({ sidebarVisible: !this.state.sidebarVisible })
   countProds = (models) => models.reduce((res, model) => { return res + model.prods.length }, 0)
   componentWillReceiveProps(nextProps) {
     // console.log(nextProps, this.props);
@@ -82,49 +84,42 @@ class ExecView extends Component {
     this.setState({ selected: [], prodCount: 0 })
   }
   blockPanel = (level) => this.setState({ panelBlockLevel: level })
+
   render() {
     // console.log('> ExecView');
-    const { selected, prodCount, mainWorkIsInProgress, panelBlockLevel } = this.state
-    const { user, sidebarVisible, toggleSidebar, curWork: {loading, error, refetch, curWork} } = this.props
+    const { sidebarVisible, selected, prodCount, mainWorkIsInProgress, panelBlockLevel } = this.state
+    const { user, curWork: {loading, error, refetch, curWork} } = this.props
     return (
       <Fragment>
         <NavBar
           user={user}
           sidebarVisible={sidebarVisible}
-          toggleSidebar={toggleSidebar}
+          toggleSidebar={this.toggleSidebar}
           prodCount={prodCount}
           mainWorkIsInProgress={mainWorkIsInProgress}
         />
-        {/* <Modal trigger={<Button>Basic Modal</Button>} basic size='small'>
-          <Header icon='archive' content='Archive Old Messages' />
-          <Modal.Content>
-            <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button basic color='red' inverted>
-              <Icon name='remove' /> No
-            </Button>
-            <Button color='green' inverted>
-              <Icon name='checkmark' /> Yes
-            </Button>
-          </Modal.Actions>
-        </Modal> */}
-        <Sidebar.Pushable as={Segment} className='komz-pushable'>
-          <Sidebar as={Card} animation='overlay' visible={sidebarVisible} className='komz-sidebar'>
-            <div className='komz-sidebar-container'>
-              <ModelList
-                selected={selected}
-                selectProd={this.selectProd}
-              />
-              <SelectedList
-                selected={selected}
-                deselect={this.deselect}
-                mainWorkIsInProgress={mainWorkIsInProgress}
-              />
-            </div>
-          </Sidebar>
-          <Sidebar.Pusher>
-            { loading ? 'Загрузка' :
+        { user.isDisp ? (
+          <div>
+            Похоже, Вы являетесь диспетчером. Панель диспетчера доступна по адресу: <a
+            href='https://pavship.github.io/komz-dispatcher'>https://pavship.github.io/komz-dispatcher</a>
+          </div>
+        ) :
+          <Sidebar.Pushable as={Segment} className='komz-pushable'>
+            <Sidebar as={Card} animation='overlay' visible={sidebarVisible} className='komz-sidebar'>
+              <div className='komz-sidebar-container'>
+                <ModelList
+                  selected={selected}
+                  selectProd={this.selectProd}
+                />
+                <SelectedList
+                  selected={selected}
+                  deselect={this.deselect}
+                  mainWorkIsInProgress={mainWorkIsInProgress}
+                />
+              </div>
+            </Sidebar>
+            <Sidebar.Pusher>
+              { loading ? 'Загрузка' :
               error ? 'Ошибка загрузки данных' :
               <ExecControlPanel
                 user={user}
@@ -133,9 +128,10 @@ class ExecView extends Component {
                 refetchCurWork={refetch}
                 panelBlockLevel={panelBlockLevel}
                 blockPanel={this.blockPanel}/>
-            }
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
+              }
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
+        }
       </Fragment>
     )
   }

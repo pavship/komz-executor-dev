@@ -10,7 +10,7 @@ export default class NavBar extends Component {
   render() {
     const { user, sidebarVisible, toggleSidebar, prodCount, mainWorkIsInProgress } = this.props
     return (
-      <Menu icon inverted className='komz-navbar' size='small'>
+      <Menu icon inverted className='komz-navbar' size='huge'>
         { user.isDisp ? null :
           <Menu.Menu>
               <Menu.Item
