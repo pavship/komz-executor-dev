@@ -17,20 +17,20 @@ class ExecControlPanel extends Component {
   }
   timer1
   componentDidMount() {
-      // this.timer1 = setInterval(() => {
-      //   if (this.props.getCurWork && this.props.getCurWork.getCurWork) {
-      //     const { start, fin } = this.props.getCurWork.getCurWork
-      //     if (!fin) this.setState({time: Math.round((new Date() - Date.parse(start))/1000)})
-      //     else this.setState({time: Math.round((Date.parse(fin) - Date.parse(start))/1000)})
-      //   }
-      // }, 1000)
+    // this.timer1 = setInterval(() => {
+    //   if (this.props.getCurWork && this.props.getCurWork.getCurWork) {
+    //     const { start, fin } = this.props.getCurWork.getCurWork
+    //     if (!fin) this.setState({time: Math.round((new Date() - Date.parse(start))/1000)})
+    //     else this.setState({time: Math.round((Date.parse(fin) - Date.parse(start))/1000)})
+    //   }
+    // }, 1000)
   }
   componentWillUnmount() {
-      clearInterval(this.timer1)
+    clearInterval(this.timer1)
   }
   tick = () => {
     const { start } = this.props.curWork
-    this.setState({time: Math.round((new Date() - Date.parse(start))/1000)})
+    this.setState({ time: Math.round((new Date() - Date.parse(start)) / 1000) })
   }
   start = () => {
     // this.setState({timer: setInterval(() => { this.tick() }, 1000)})
@@ -40,19 +40,19 @@ class ExecControlPanel extends Component {
   createWork = (workType, workSubType, models) => {
     // console.log('> createWork');
     const start = new Date()
-    const { createWork, user: {name} } = this.props
+    const { createWork, user: { name } } = this.props
     const execName = name
     createWork({ variables: { start, execName, workType, workSubType, models } })
-    .then((obj) => {
-      this.props.refetchCurWork()
-    })
+      .then((obj) => {
+        this.props.refetchCurWork()
+      })
   }
   finishWork = () => {
     // this.stop()
     // console.log('> finishWork');
     const { id, start } = this.props.curWork
     const fin = new Date()
-    const time = Math.round((fin - Date.parse(start))/1000)
+    const time = Math.round((fin - Date.parse(start)) / 1000)
     this.props.finishWork({
       variables: { id, time, fin }
     })
@@ -90,29 +90,29 @@ class ExecControlPanel extends Component {
         title: type,
         style: 'main',
       })), {
-      worktype: 'Косвенные',
-      worksubtype: 'ТО оборудования',
-      title: 'ТО оборудования',
-      style: 'aux',
-    },{
-      worktype: 'Отдых',
-      title: 'Перерыв/обед',
-      style: 'rest',
-    },{
-      worktype: 'Побочные',
-      title: 'Все прочие',
-      style: 'aside',
-    }, {
-      worktype: 'Негативные',
-      worksubtype: 'Простой',
-      title: 'Простой',
-      style: 'negative',
-    },{
-      worktype: 'Негативные',
-      worksubtype: 'Экстренный случай',
-      title: 'Экстренный случай',
-      style: 'negative',
-    }]
+        worktype: 'Косвенные',
+        worksubtype: 'ТО оборудования',
+        title: 'ТО оборудования',
+        style: 'aux',
+      }, {
+        worktype: 'Отдых',
+        title: 'Перерыв/обед',
+        style: 'rest',
+      }, {
+        worktype: 'Побочные',
+        title: 'Все прочие',
+        style: 'aside',
+      }, {
+        worktype: 'Негативные',
+        worksubtype: 'Простой',
+        title: 'Простой',
+        style: 'negative',
+      }, {
+        worktype: 'Негативные',
+        worksubtype: 'Экстренный случай',
+        title: 'Экстренный случай',
+        style: 'negative',
+      }]
     return (
       <Segment basic className='komz-no-padding' loading={panelBlockLevel > 0}>
         {/* <Segment basic className='komz-exec-status-bar'>
@@ -131,14 +131,14 @@ class ExecControlPanel extends Component {
               key={wt.title}
               name={wt.title}
               active={!curWork.fin &&
-                      curWork.workType === wt.worktype &&
-                      (!wt.worksubtype || curWork.workSubType === wt.worksubtype)}
+                curWork.workType === wt.worktype &&
+                (!wt.worksubtype || curWork.workSubType === wt.worksubtype)}
               worktype={wt.worktype}
               worksubtype={wt.worksubtype}
               onClick={this.handleWork}
               className={wt.style && `komz-color-wt-${wt.style}`}
               disabled={wt.worktype === 'Прямые' && !selected.length} >
-              { (wt.worktype === 'Прямые' && !selected.length) &&
+              {(wt.worktype === 'Прямые' && !selected.length) &&
                 <Icon name='lock' />
               }
               {wt.title}
@@ -151,25 +151,19 @@ class ExecControlPanel extends Component {
 }
 
 export default compose(
-    // graphql(
-    //     curWork,
-    //     {
-    //         name: 'curWork'
-    //     }
-    // ),
-    graphql(
-        createWork,
-        {
-            name: 'createWork',
-            options: {
-              refetchQueries: ['getCurWork']
-            }
-        }
-    ),
-    graphql(
-        finishWork,
-        {
-            name: 'finishWork'
-        }
-    ),
+  graphql(
+    createWork,
+    {
+      name: 'createWork',
+      options: {
+        refetchQueries: ['getCurWork']
+      }
+    }
+  ),
+  graphql(
+    finishWork,
+    {
+      name: 'finishWork'
+    }
+  ),
 )(ExecControlPanel);
