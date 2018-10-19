@@ -6,6 +6,7 @@ import { Accordion, Icon, Label, Header } from 'semantic-ui-react'
 import ProdList from './ProdList'
 
 import deptModelsQuery from '../graphql/deptModelsQuery'
+import deptProds from '../graphql/deptProds'
 
 class ModelList extends Component {
 
@@ -61,64 +62,131 @@ class ModelList extends Component {
 }
 
 export default compose(
-    graphql(
-        deptModelsQuery,
-        {
-            name: 'deptModelsQuery',
-            options: {
-                fetchPolicy: 'cache-and-network',
-            },
-            props: ({ deptModelsQuery, ownProps }) => {
-              // console.log(deptModelsQuery);
-              if (!deptModelsQuery.deptModels) return { deptModelsQuery }
-              if (!ownProps.selected.length) return {
-                deptModelsQuery: {
-                  ...deptModelsQuery,
-                  deptModels: _.sortBy(
-                    deptModelsQuery.deptModels,
-                    function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
-                  )
-                }
-              }
-              return {
-                deptModelsQuery: {
-                  ...deptModelsQuery,
-                  deptModels: _.sortBy(
-                    [
-                      ...ownProps.selected.map(model => {
-                        const deptModel = _.find(deptModelsQuery.deptModels, {model: {id: model.id}})
-                        return {
-                          ...deptModel,
-                          prods: [
-                            ...model.prods.map(prod => {
-                              const prodFromDeptModel = _.find(deptModel.prods, {id: prod.id})
-                              return {
-                                ...prodFromDeptModel,
-                                checked: true
-                              }
-                            }),
-                            ...deptModel.prods.filter(prod => {
-                              return !_.includes( _.map(model.prods, 'id'), prod.id )
-                            }),
-                          ]
-                        }
-                      }),
-                      ...deptModelsQuery.deptModels.filter(deptModel => {
-                        return !_.includes( _.map(ownProps.selected, 'id'), deptModel.model.id )
-                      }),
-                      // ...deptModelsQuery.deptModels.filter(deptModel => {
-                      //   return _.includes( _.map(ownProps.selected, 'id'), deptModel.model.id )
-                      // })
-                    ],
-                    function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
-                  )
-                  // .sort((a, b) =>
-                  //   (a.model.name.slice(0, a.model.name.indexOf(' ')) & ' ' & a.model.article) >
-                  //   (b.model.name.slice(0, b.model.name.indexOf(' ')) & ' ' & b.model.article) ? 1 : -1
-                  // )
-                }
-              }
+  // @ts-ignore
+  // graphql(
+  //     deptModelsQuery,
+  //     {
+  //         name: 'deptModelsQuery',
+  //         options: {
+  //             fetchPolicy: 'cache-and-network',
+  //         },
+  //         props: ({ deptModelsQuery, ownProps }) => {
+  //           // console.log(deptModelsQuery);
+  //           if (!deptModelsQuery.deptModels) return { deptModelsQuery }
+  //           if (!ownProps.selected.length) return {
+  //             deptModelsQuery: {
+  //               ...deptModelsQuery,
+  //               deptModels: _.sortBy(
+  //                 deptModelsQuery.deptModels,
+  //                 function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
+  //               )
+  //             }
+  //           }
+  //           return {
+  //             deptModelsQuery: {
+  //               ...deptModelsQuery,
+  //               deptModels: _.sortBy(
+  //                 [
+  //                   ...ownProps.selected.map(model => {
+  //                     const deptModel = _.find(deptModelsQuery.deptModels, {model: {id: model.id}})
+  //                     return {
+  //                       ...deptModel,
+  //                       prods: [
+  //                         ...model.prods.map(prod => {
+  //                           const prodFromDeptModel = _.find(deptModel.prods, {id: prod.id})
+  //                           return {
+  //                             ...prodFromDeptModel,
+  //                             checked: true
+  //                           }
+  //                         }),
+  //                         ...deptModel.prods.filter(prod => {
+  //                           return !_.includes( _.map(model.prods, 'id'), prod.id )
+  //                         }),
+  //                       ]
+  //                     }
+  //                   }),
+  //                   ...deptModelsQuery.deptModels.filter(deptModel => {
+  //                     return !_.includes( _.map(ownProps.selected, 'id'), deptModel.model.id )
+  //                   }),
+  //                 ],
+  //                 function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
+  //               )
+  //               // .sort((a, b) =>
+  //               //   (a.model.name.slice(0, a.model.name.indexOf(' ')) & ' ' & a.model.article) >
+  //               //   (b.model.name.slice(0, b.model.name.indexOf(' ')) & ' ' & b.model.article) ? 1 : -1
+  //               // )
+  //             }
+  //           }
+  //         }
+  //     }
+  // ),
+  graphql(
+    deptProds,
+      {
+        name: 'deptModelsQuery',
+        options: {
+            fetchPolicy: 'cache-and-network',
+        },
+        props: ({ deptModelsQuery, ownProps }) => {
+          if (!deptModelsQuery.deptProds) return { deptModelsQuery }
+          const deptProds = deptModelsQuery.deptProds
+          const deptModels =
+            _(deptProds)
+              .groupBy('model.id')
+              .reduce(function(deptModels, prods) {
+                return [
+                  ...deptModels,
+                  {
+                    id: prods[0].model.id,
+                    model: prods[0].model,
+                    prods: prods.map(p => ({
+                      ...p,
+                      model: 'removed'
+                    }))
+                  }
+                ]
+              }, [])
+          if (!ownProps.selected.length) return {
+            deptModelsQuery: {
+              ...deptModelsQuery,
+              deptModels: _.sortBy(
+                deptModels,
+                function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
+              )
             }
+          }
+          return {
+            deptModelsQuery: {
+              ...deptModelsQuery,
+              deptModels: _.sortBy(
+                [
+                  ...ownProps.selected.map(model => {
+                    const deptModel = _.find(deptModels, {model: {id: model.id}})
+                    return {
+                      ...deptModel,
+                      prods: [
+                        ...model.prods.map(prod => {
+                          const prodFromDeptModel = _.find(deptModel.prods, {id: prod.id})
+                          return {
+                            ...prodFromDeptModel,
+                            checked: true
+                          }
+                        }),
+                        ...deptModel.prods.filter(prod => {
+                          return !_.includes( _.map(model.prods, 'id'), prod.id )
+                        }),
+                      ]
+                    }
+                  }),
+                  ...deptModels.filter(deptModel => {
+                    return !_.includes( _.map(ownProps.selected, 'id'), deptModel.model.id )
+                  }),
+                ],
+                function(dm){return `${dm.model.name.slice(0, dm.model.name.indexOf(' '))} ${dm.model.article}`}
+              )
+            }
+          }
         }
-    ),
+    }
+  ),
 )(ModelList);
